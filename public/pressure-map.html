@@ -1,0 +1,262 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
+    />
+    <title>Curb Pressure Map</title>
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.css"
+      integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
+      crossorigin=""
+    />
+    <style>
+      html,
+      body,
+      #map {
+        width: 100%;
+        height: 100%;
+        margin: 0;
+      }
+
+      body {
+        overflow: hidden;
+        background: #edf4f8;
+      }
+
+      .leaflet-container {
+        background: #edf4f8;
+        font: 12px/1.4 "Aptos", "Segoe UI", sans-serif;
+      }
+
+      .leaflet-control-container {
+        display: none;
+      }
+
+      .leaflet-tile-pane {
+        opacity: 1;
+        filter: saturate(1.04) contrast(1.08) brightness(1.02);
+      }
+
+      .map-credit {
+        position: absolute;
+        right: 10px;
+        bottom: 10px;
+        z-index: 500;
+        padding: 4px 8px;
+        border-radius: 999px;
+        background: rgba(255, 252, 247, 0.88);
+        color: #56697f;
+        font-size: 11px;
+        box-shadow: 0 8px 18px rgba(22, 48, 71, 0.12);
+        backdrop-filter: blur(10px);
+      }
+
+      .map-credit a {
+        color: inherit;
+        text-decoration: none;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="map"></div>
+    <div class="map-credit">
+      Basemap:
+      <a href="https://carto.com/attributions" target="_blank" rel="noreferrer">
+        CARTO
+      </a>
+    </div>
+
+    <script
+      src="https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.js"
+      integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
+      crossorigin=""
+    ></script>
+    <script>
+      const params = new URLSearchParams(window.location.search);
+      const view = params.get("view") === "hotspot" ? "hotspot" : "citywide";
+      const requestedRegionKey = params.get("region");
+      const renderer = L.canvas({ padding: 0.5 });
+
+      function dataUrl(fileName) {
+        const basePath = window.location.pathname.replace(/pressure-map\.html$/, "");
+        return `${basePath}data/${fileName}`;
+      }
+
+      function riskColor(value) {
+        if (value >= 0.2) return "#7c2d12";
+        if (value >= 0.09) return "#c2410c";
+        if (value >= 0.05) return "#ea580c";
+        if (value >= 0.033) return "#f59e0b";
+        return "#eab308";
+      }
+
+      function featureBounds(feature) {
+        const bounds = [Infinity, Infinity, -Infinity, -Infinity];
+
+        function visit(coordinates) {
+          if (!Array.isArray(coordinates)) {
+            return;
+          }
+          if (typeof coordinates[0] === "number") {
+            bounds[0] = Math.min(bounds[0], coordinates[0]);
+            bounds[1] = Math.min(bounds[1], coordinates[1]);
+            bounds[2] = Math.max(bounds[2], coordinates[0]);
+            bounds[3] = Math.max(bounds[3], coordinates[1]);
+            return;
+          }
+          coordinates.forEach(visit);
+        }
+
+        visit(feature.geometry?.coordinates);
+        return bounds;
+      }
+
+      function featureIntersectsBounds(feature, bounds) {
+        const [minX, minY, maxX, maxY] = featureBounds(feature);
+        if (!Number.isFinite(minX)) {
+          return false;
+        }
+        return !(maxX < bounds[0] || minX > bounds[2] || maxY < bounds[1] || minY > bounds[3]);
+      }
+
+      function filterFeaturesByBounds(collection, bounds) {
+        return {
+          type: "FeatureCollection",
+          features: collection.features.filter((feature) => featureIntersectsBounds(feature, bounds))
+        };
+      }
+
+      const map = L.map("map", {
+        preferCanvas: true,
+        zoomControl: false,
+        attributionControl: false,
+        dragging: false,
+        scrollWheelZoom: false,
+        doubleClickZoom: false,
+        boxZoom: false,
+        keyboard: false,
+        tap: false,
+        touchZoom: false
+      });
+
+      map.setView([40.7128, -74.006], 10.6);
+
+      const cartoLayer = L.tileLayer("https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png", {
+        subdomains: "abcd",
+        maxZoom: 20
+      }).addTo(map);
+
+      map.whenReady(() => {
+        window.setTimeout(() => {
+          map.invalidateSize(false);
+        }, 0);
+      });
+
+      window.addEventListener("resize", () => {
+        map.invalidateSize(false);
+      });
+
+      function citywideStyle(feature) {
+        return {
+          renderer,
+          color: riskColor(feature.properties.risk_mean),
+          weight: 2.1,
+          opacity: 0.78,
+          lineCap: "round"
+        };
+      }
+
+      function backgroundStyle() {
+        return {
+          renderer,
+          color: "#94a3b8",
+          weight: 1.3,
+          opacity: 0.18,
+          lineCap: "round"
+        };
+      }
+
+      function hotspotStyle(feature) {
+        return {
+          renderer,
+          color: riskColor(feature.properties.risk_mean),
+          weight: 3.2,
+          opacity: 0.92,
+          lineCap: "round"
+        };
+      }
+
+      Promise.all([
+        fetch(dataUrl("pressure-region-summaries.json")).then((response) => response.json()),
+        fetch(dataUrl("pressure-citywide.geojson")).then((response) => response.json()),
+        view === "hotspot"
+          ? fetch(dataUrl("pressure-hotspot.geojson")).then((response) => response.json())
+          : Promise.resolve(null)
+      ]).then(([regionIndex, citywide, hotspot]) => {
+        if (view === "citywide") {
+          L.geoJSON(citywide, {
+            renderer,
+            interactive: false,
+            style: citywideStyle
+          }).addTo(map);
+          return;
+        }
+
+        const defaultSummary =
+          regionIndex.summaries.find((summary) => summary.key === regionIndex.default_region_key) ??
+          null;
+        const activeSummary =
+          regionIndex.summaries.find((summary) => summary.key === requestedRegionKey) ??
+          defaultSummary;
+        if (!activeSummary) {
+          throw new Error("Selected region summary could not be found.");
+        }
+
+        L.geoJSON(citywide, {
+          renderer,
+          interactive: false,
+          style: backgroundStyle
+        }).addTo(map);
+
+        const focusData =
+          activeSummary.key === regionIndex.default_region_key && hotspot
+            ? hotspot
+            : filterFeaturesByBounds(citywide, activeSummary.bounds);
+
+        const focusLayer = L.geoJSON(focusData, {
+          renderer,
+          interactive: false,
+          style: hotspotStyle
+        }).addTo(map);
+
+        const bounds = [
+          [activeSummary.bounds[1], activeSummary.bounds[0]],
+          [activeSummary.bounds[3], activeSummary.bounds[2]]
+        ];
+
+        L.rectangle(bounds, {
+          color: "#c65b30",
+          weight: 1.5,
+          opacity: 0.42,
+          fillOpacity: 0
+        }).addTo(map);
+
+        map.fitBounds(bounds, {
+          padding: [18, 18]
+        });
+
+        if (focusLayer.getBounds().isValid()) {
+          map.panBy([24, -8], { animate: false });
+        }
+      }).catch((error) => {
+        console.error("Pressure map data failed to load.", error);
+        map.setView([40.7128, -74.006], 10.6);
+        cartoLayer.redraw();
+      });
+    </script>
+  </body>
+</html>

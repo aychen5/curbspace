@@ -1,0 +1,606 @@
+:root {
+  font-family: "Aptos", "Segoe UI Variable", "Segoe UI", sans-serif;
+  line-height: 1.5;
+  font-weight: 400;
+  color: #163047;
+  background:
+    radial-gradient(circle at top left, rgba(250, 232, 173, 0.5) 0%, transparent 32%),
+    radial-gradient(circle at bottom right, rgba(112, 185, 194, 0.34) 0%, transparent 34%),
+    linear-gradient(180deg, #f4efe4 0%, #e8ece5 46%, #dde7ee 100%);
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  --ink: #163047;
+  --ink-strong: #10253c;
+  --muted: #5c6d7e;
+  --border: rgba(22, 48, 71, 0.12);
+  --border-strong: rgba(22, 48, 71, 0.24);
+  --surface: rgba(255, 252, 247, 0.84);
+  --surface-strong: rgba(255, 252, 247, 0.94);
+  --shadow-soft: 0 18px 40px rgba(22, 48, 71, 0.12);
+  --shadow-strong: 0 28px 72px rgba(22, 48, 71, 0.18);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body,
+#root {
+  margin: 0;
+  min-height: 100%;
+}
+
+body {
+  min-width: 320px;
+  color: var(--ink);
+  background: transparent;
+}
+
+img,
+svg {
+  display: block;
+  max-width: 100%;
+}
+
+.app-shell {
+  width: 100%;
+  margin: 0 auto;
+  padding: 0 0 6rem;
+}
+
+.hero {
+  width: min(54rem, calc(100% - 3rem));
+  margin: 0 auto;
+  padding: 3rem 0 2rem;
+}
+
+.hero__kicker {
+  margin: 0 0 0.75rem;
+  font-size: 0.85rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #475569;
+}
+
+.hero h1 {
+  margin: 0 0 1rem;
+  font-size: clamp(2.5rem, 6vw, 4.5rem);
+  line-height: 0.95;
+}
+
+.hero__body {
+  margin: 0;
+  max-width: 38rem;
+  font-size: 1.05rem;
+  color: #334155;
+}
+
+.scrolly {
+  position: relative;
+}
+
+.curb-story-flow .scrolly {
+  margin-bottom: 0;
+}
+
+.curb-story-flow .scrolly__text {
+  padding-bottom: 10vh;
+}
+
+.scrolly__graphic {
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  overflow: hidden;
+}
+
+.scrolly__sticky {
+  height: 100%;
+}
+
+.scene {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(180deg, #edf3f7 0%, #dde6ee 100%);
+}
+
+.scene__canvas {
+  position: absolute;
+  inset: 0;
+  margin: auto;
+  width: min(100%, calc(100vh * 1.65));
+  max-height: 100%;
+  aspect-ratio: 1729 / 1048;
+}
+
+.scene__road {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  object-position: center;
+}
+
+.scene__street-layer {
+  position: absolute;
+  inset: 0;
+}
+
+.scene__merge-path {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+  pointer-events: none;
+}
+
+.scene__overlay {
+  position: absolute;
+  inset: 0;
+  padding: 1.5rem;
+}
+
+.scene__lane-labels {
+  position: absolute;
+  left: 50%;
+  bottom: 1rem;
+  width: min(100%, calc(100vh * 1.65));
+  display: grid;
+  grid-template-columns: 19.2fr 14.1fr 25.7fr 10.5fr 11.2fr 19.3fr;
+  gap: clamp(0.25rem, 0.8vw, 0.55rem);
+  padding: 0 clamp(0.65rem, 1.8vw, 1.5rem);
+  transform: translateX(-50%);
+  pointer-events: none;
+  z-index: 2;
+}
+
+.scene__lane-label {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 2.35rem;
+  padding: 0.35rem 0.5rem 0.45rem;
+  border-top: 0.3rem solid currentColor;
+  border-radius: 14px;
+  font-family: "Iowan Old Style", "Palatino Linotype";
+  font-size: clamp(0.68rem, 0.95vw, 0.82rem);
+  font-weight: 700;
+  line-height: 1.1;
+  letter-spacing: 0.02em;
+  text-align: center;
+  box-shadow: 0 10px 24px rgba(15, 23, 42, 0.08);
+  backdrop-filter: blur(10px);
+}
+
+.scene__panel {
+  width: min(28rem, 100%);
+  padding: 1rem 1.1rem;
+  border: 1px solid rgba(148, 163, 184, 0.45);
+  border-radius: 20px;
+  background: rgba(255, 255, 255, 0.78);
+  backdrop-filter: blur(10px);
+  box-shadow: 0 18px 44px rgba(15, 23, 42, 0.12);
+}
+
+.scene__eyebrow {
+  margin: 0 0 0.5rem;
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #64748b;
+}
+
+.scene__panel h2 {
+  margin: 0 0 0.5rem;
+  font-size: clamp(1.75rem, 3vw, 2.5rem);
+  line-height: 1;
+}
+
+.scene__panel p {
+  margin: 0;
+  color: #334155;
+}
+
+.scene__actor-anchor,
+.scene__actor,
+.scene__cyclist-merge,
+.scene__conflict {
+  position: absolute;
+}
+
+.scene__actor,
+.scene__cyclist-merge,
+.scene__conflict {
+  transform-origin: center;
+}
+
+.scene__actor-anchor--fade-in {
+  opacity: 0;
+  animation: scene-actor-fade-in 420ms ease-out forwards;
+}
+
+.scene__vehicle,
+.scene__cyclist {
+  width: 100%;
+  height: auto;
+  filter: drop-shadow(0 12px 20px rgba(15, 23, 42, 0.18));
+}
+
+.scene__tree {
+  display: block;
+  width: 100%;
+  height: auto;
+  opacity: 0.92;
+  filter: drop-shadow(0 12px 18px rgba(15, 23, 42, 0.14));
+  pointer-events: none;
+}
+
+.scene__merge-path-line {
+  fill: none;
+  stroke: #be123c;
+  stroke-width: 1.15;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-dasharray: 100;
+  stroke-dashoffset: 100;
+  opacity: 0;
+  filter: drop-shadow(0 0.45rem 0.65rem rgba(190, 24, 93, 0.24));
+  animation: scene-merge-path-draw 700ms ease-out 1600ms forwards;
+}
+
+.scene__actor-anchor--cyclist-merge-hazard {
+  z-index: 4;
+  animation: scene-cyclist-merge-hazard 1600ms cubic-bezier(0.22, 0.7, 0.18, 1)
+    forwards;
+  will-change: left, top, opacity;
+}
+
+.scene__actor-anchor--queue-hazard {
+  z-index: 3;
+  opacity: 0;
+  animation: scene-queue-hazard 1800ms cubic-bezier(0.22, 0.7, 0.18, 1)
+    1900ms
+    both;
+  will-change: left, top;
+}
+
+.scene__actor-anchor--queue-hazard .scene__vehicle {
+  filter: drop-shadow(0 14px 24px rgba(190, 24, 93, 0.22));
+}
+
+.scene__actor--double-parked .scene__vehicle {
+  filter: drop-shadow(0 16px 24px rgba(190, 24, 93, 0.32));
+}
+
+.scene__parking-blinker {
+  position: absolute;
+  right: 25%;
+  top: 83%;
+  width: 0.65rem;
+  height: 0.65rem;
+  border-radius: 999px;
+  background: rgba(248, 113, 113, 0.95);
+  transform: translate(50%, -50%);
+  opacity: 0;
+  box-shadow: 0 0 0 rgba(239, 68, 68, 0);
+  animation: scene-parking-blinker 420ms ease-in-out infinite;
+  pointer-events: none;
+}
+
+@keyframes scene-parking-blinker {
+  0%,
+  100% {
+    opacity: 0;
+    box-shadow: 0 0 0 rgba(239, 68, 68, 0);
+  }
+
+  35%,
+  55% {
+    opacity: 1;
+    box-shadow:
+      0 0 0.45rem rgba(248, 113, 113, 0.95),
+      0 0 1rem rgba(239, 68, 68, 0.75),
+      0 0 1.7rem rgba(220, 38, 38, 0.48);
+  }
+}
+
+@keyframes scene-actor-fade-in {
+  0% {
+    opacity: 0;
+    transform: translateY(0.4rem);
+  }
+
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes scene-queue-hazard {
+  0% {
+    left: 50.5%;
+    top: 16%;
+    opacity: 0;
+  }
+
+  100% {
+    left: 51%;
+    top: 35%;
+    opacity: 1;
+  }
+}
+
+@keyframes scene-cyclist-merge-hazard {
+  0% {
+    left: 60%;
+    top: 16%;
+    opacity: 0;
+  }
+
+  100% {
+    left: 60%;
+    top: 30%;
+    opacity: 1;
+  }
+}
+
+@keyframes scene-merge-path-draw {
+  0% {
+    stroke-dashoffset: 100;
+    opacity: 0;
+  }
+
+  10% {
+    opacity: 1;
+  }
+
+  100% {
+    stroke-dashoffset: 0;
+    opacity: 1;
+  }
+}
+
+.scene__annotation {
+  position: absolute;
+  left: 0;
+  top: 0;
+  pointer-events: none;
+}
+
+.scene__annotation-text {
+  position: absolute;
+  left: 0;
+  top: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transform: translate(-50%, -50%);
+  color: #0f172a;
+  font-size: 0.82rem;
+  font-weight: 700;
+  line-height: 1.1;
+  letter-spacing: 0.01em;
+  text-align: center;
+  white-space: nowrap;
+  z-index: 2;
+}
+
+.scene__annotation-line {
+  position: absolute;
+  left: 0;
+  top: 0;
+  height: 2px;
+  border-radius: 999px;
+  background: rgba(15, 23, 42, 0.6);
+  transform-origin: 0 50%;
+  z-index: 0;
+}
+
+.scene__annotation-dot {
+  position: absolute;
+  width: 0.9rem;
+  height: 0.9rem;
+  border-radius: 999px;
+  background: #0f172a;
+  border: 3px solid rgba(255, 255, 255, 0.96);
+  transform: translate(-50%, -50%);
+  box-shadow: 0 6px 14px rgba(15, 23, 42, 0.22);
+  z-index: 1;
+}
+
+.scene__dock {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 1.3;
+}
+
+.scene__dock-bikes {
+  position: absolute;
+  left: 0;
+  top: 25%;
+  display: flex;
+  gap: 0.55rem;
+  align-items: end;
+  padding: 0.45rem 0.7rem;
+  border-radius: 18px;
+  background: rgba(255, 255, 255, 0.92);
+  box-shadow: 0 14px 28px rgba(15, 23, 42, 0.12);
+}
+
+.scene__dock-bikes span {
+  width: 1.15rem;
+  height: 2.9rem;
+  border-radius: 999px;
+  background: linear-gradient(180deg, #0f172a 0%, #475569 100%);
+}
+
+.scene__dock-cyclist {
+  position: absolute;
+  right: -8%;
+  bottom: -6%;
+  width: 58%;
+  filter: drop-shadow(0 12px 18px rgba(15, 23, 42, 0.18));
+}
+
+.scene__bus {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 2.6;
+  border-radius: 999px;
+  background: linear-gradient(180deg, #1d4ed8 0%, #1e3a8a 100%);
+  box-shadow: 0 14px 24px rgba(15, 23, 42, 0.18);
+}
+
+.scene__bus::after {
+  content: "";
+  position: absolute;
+  left: 8%;
+  right: 8%;
+  bottom: 10%;
+  height: 12%;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.28);
+}
+
+.scene__bus-windows {
+  position: absolute;
+  left: 14%;
+  right: 14%;
+  top: 20%;
+  display: flex;
+  gap: 0.4rem;
+}
+
+.scene__bus-windows span {
+  flex: 1;
+  height: 1rem;
+  border-radius: 999px;
+  background: rgba(219, 234, 254, 0.92);
+}
+
+.scene__conflict-label {
+  display: inline-flex;
+  align-items: center;
+  min-height: 2rem;
+  padding: 0.35rem 0.75rem;
+  border-radius: 999px;
+  background: #be123c;
+  color: #fff1f2;
+  font-size: 0.8rem;
+  font-weight: 700;
+  box-shadow: 0 12px 24px rgba(15, 23, 42, 0.14);
+}
+
+.scrolly__text {
+  position: relative;
+  z-index: 1;
+  width: min(38rem, calc(100% - 2rem));
+  margin: -72vh 2rem 0 auto;
+  padding: 0 0 30vh;
+}
+
+.step {
+  min-height: 72vh;
+  display: flex;
+  align-items: center;
+  padding: 2rem 0;
+}
+
+.step__inner {
+  width: min(100%, 38rem);
+  margin-left: auto;
+  background: rgba(255, 255, 255, 0.9);
+  border: 1px solid rgba(148, 163, 184, 0.55);
+  border-radius: 18px;
+  padding: 1.5rem;
+  backdrop-filter: blur(12px);
+  box-shadow: 0 18px 38px rgba(15, 23, 42, 0.12);
+  transition: border-color 200ms ease, transform 200ms ease,
+    box-shadow 200ms ease;
+}
+
+.step--active .step__inner {
+  border-color: #0f172a;
+  transform: translateY(-4px);
+  box-shadow: 0 20px 40px rgba(15, 23, 42, 0.14);
+}
+
+.step__eyebrow {
+  margin: 0 0 0.5rem;
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #64748b;
+}
+
+.step h2,
+.step p {
+  margin-top: 0;
+}
+
+.step p:last-child {
+  margin-bottom: 0;
+}
+
+@media (max-width: 900px) {
+  .app-shell {
+    padding: 2rem 0 4rem;
+  }
+
+  .hero {
+    width: min(100% - 1.5rem, 42rem);
+    padding-top: 1rem;
+  }
+
+  .scrolly__text {
+    width: min(100% - 1.5rem, 36rem);
+    margin-top: -60vh;
+    padding-bottom: 22vh;
+  }
+
+  .curb-story-flow .scrolly__text {
+    padding-bottom: 8vh;
+  }
+
+  .step {
+    min-height: 60vh;
+    padding: 2rem 0;
+  }
+
+  .step__inner {
+    margin-left: 0;
+  }
+
+  .scene__overlay {
+    padding: 1rem;
+  }
+
+  .scene__lane-labels {
+    bottom: 0.7rem;
+    gap: 0.25rem;
+    padding: 0 0.55rem;
+  }
+
+  .scene__lane-label {
+    min-height: 2rem;
+    padding: 0.25rem 0.3rem 0.35rem;
+    font-size: 0.62rem;
+  }
+
+  .scene__canvas {
+    width: 100%;
+  }
+
+  .scene__annotation-text {
+    font-size: 0.72rem;
+  }
+}
