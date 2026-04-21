@@ -103,7 +103,7 @@ export function PressureGraphic({ state }: PressureGraphicProps) {
       : activeRegion?.label ?? state.hotspotLabel ?? "Downtown Brooklyn";
   const detailNote =
     lookupEnabled && isDefaultRegion
-      ? state.hotspotNote ?? activeRegion?.note ?? "Regional metrics are loading."
+      ? state.hotspotNote ?? null
       : activeRegion?.note ?? state.hotspotNote ?? "Regional metrics are loading.";
   const detailMetrics = activeRegion?.metrics ?? [];
   const detailSourceNote =
@@ -237,7 +237,7 @@ export function PressureGraphic({ state }: PressureGraphicProps) {
           <div className="pressure-scene__detail-card">
             <p className="pressure-scene__detail-eyebrow">{detailEyebrow}</p>
             <h3>{detailLabel}</h3>
-            <p>{detailNote}</p>
+            {detailNote ? <p>{detailNote}</p> : null}
 
             {lookupEnabled ? (
               <>

@@ -31,8 +31,8 @@ const segmentGlows = [
   { top: "12.5%", height: "10%", tone: "yellow" },
   { top: "26.5%", height: "10%", tone: "orange" },
   { top: "40.5%", height: "10%", tone: "red" },
-  { top: "54.5%", height: "10%", tone: "amber" },
-  { top: "68.5%", height: "10%", tone: "yellow-soft" }
+  { top: "54.5%", height: "10%", tone: "yellow-soft" },
+  { top: "68.5%", height: "10%", tone: "red" }
 ] as const;
 const demandLayers = [
   { label: "Business density", tone: "steel" },

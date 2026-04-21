@@ -47,8 +47,6 @@ export const pressureChapters: PressureChapter[] = [
     state: {
       variant: "hotspot",
       hotspotLabel: "Downtown Brooklyn",
-      hotspotNote:
-        "Start with Downtown Brooklyn, then type a borough or ZIP code to compare another part of the city.",
       enableRegionLookup: true
     }
   }

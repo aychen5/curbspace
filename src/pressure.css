@@ -143,8 +143,8 @@
   position: absolute;
   right: calc(50% + 2.6rem);
   top: 50%;
-  width: min(34rem, 50vw);
-  height: 27rem;
+  width: min(39rem, 58vw);
+  height: 31rem;
   transform: translateY(-50%);
   pointer-events: none;
   z-index: 1;
@@ -155,20 +155,19 @@
   left: 0;
   right: 0;
   top: 50%;
-  height: 9.3rem;
+  height: 11.4rem;
   opacity: 0;
-  transition: opacity 320ms ease, transform 420ms cubic-bezier(0.18, 0.9, 0.28, 1),
-    box-shadow 320ms ease;
+  transition: opacity 320ms ease, transform 420ms cubic-bezier(0.18, 0.9, 0.28, 1);
 }
 
 .pressure-bridge-scene__layer-item::before {
   content: "";
   position: absolute;
-  left: 1rem;
-  top: 5.2rem;
-  width: 20.5rem;
-  height: 1.55rem;
-  clip-path: polygon(17% 0, 100% 0, 83% 100%, 0 100%);
+  left: 1.15rem;
+  top: 6.65rem;
+  width: 21.3rem;
+  height: 2.15rem;
+  clip-path: polygon(50% 0, 100% 50%, 50% 100%, 0 50%);
   border: 1px solid rgba(120, 131, 145, 0.42);
   background: linear-gradient(180deg, #e8edf3 0%, #d6e0ea 100%);
   z-index: 0;
@@ -177,13 +176,15 @@
 .pressure-bridge-scene__layer-item::after {
   content: "";
   position: absolute;
-  left: 1.2rem;
-  top: 1.95rem;
-  width: 19.3rem;
-  height: 5.1rem;
-  border-radius: 999px;
-  background: rgba(39, 55, 76, 0.16);
+  left: -0.9rem;
+  top: -0.7rem;
+  width: 25.3rem;
+  height: 10.2rem;
+  clip-path: polygon(50% 0, 100% 50%, 50% 100%, 0 50%);
+  background: transparent;
   filter: blur(14px);
+  opacity: 0;
+  transition: opacity 320ms ease, background 320ms ease;
   z-index: 0;
 }
 
@@ -191,15 +192,16 @@
   position: absolute;
   left: 0;
   top: 0;
-  width: 20.5rem;
-  height: 6.8rem;
+  width: 23.5rem;
+  height: 8.8rem;
   overflow: visible;
   border: 1px solid rgba(120, 131, 145, 0.62);
-  clip-path: polygon(17% 0, 100% 0, 83% 78%, 0 78%);
+  clip-path: polygon(50% 0, 100% 50%, 50% 100%, 0 50%);
   background:
     linear-gradient(132deg, rgba(148, 163, 184, 0.08) 0%, rgba(148, 163, 184, 0.02) 24%, transparent 24.8%, transparent 100%),
     linear-gradient(180deg, #ffffff 0%, #f7fafd 100%);
-  box-shadow: 0 14px 24px rgba(22, 48, 71, 0.12);
+  filter: none;
+  transition: border-color 320ms ease;
   z-index: 1;
 }
 
@@ -212,15 +214,15 @@
 
 .pressure-bridge-scene__layer-tag {
   position: absolute;
-  left: 21.5rem;
+  left: 24.7rem;
   top: 50%;
   display: inline-flex;
   align-items: center;
-  min-height: 1.5rem;
-  padding: 0 0 0 0.8rem;
+  min-height: 1.7rem;
+  padding: 0 0 0 0.95rem;
   border-radius: 999px;
   color: var(--ink-strong);
-  font-size: 0.75rem;
+  font-size: 0.82rem;
   font-weight: 600;
   line-height: 1;
   letter-spacing: 0.01em;
@@ -233,7 +235,7 @@
   position: absolute;
   left: 0;
   top: 50%;
-  width: 0.56rem;
+  width: 0.7rem;
   height: 1px;
   background: rgba(22, 48, 71, 0.32);
   transform: translateY(-50%);
@@ -318,47 +320,61 @@
 }
 
 .pressure-bridge-scene--pressure-bridge-drivers .pressure-bridge-scene__layer-item:nth-child(1) {
-  transform: translate(0.2rem, -10.1rem);
+  transform: translate(0.2rem, -11.8rem);
 }
 
 .pressure-bridge-scene--pressure-bridge-drivers .pressure-bridge-scene__layer-item:nth-child(2) {
-  transform: translate(1.05rem, -5.4rem);
+  transform: translate(1.2rem, -6rem);
 }
 
 .pressure-bridge-scene--pressure-bridge-drivers .pressure-bridge-scene__layer-item:nth-child(3) {
-  transform: translate(1.95rem, -0.2rem);
+  transform: translate(2.2rem, -0.2rem);
 }
 
 .pressure-bridge-scene--pressure-bridge-drivers .pressure-bridge-scene__layer-item:nth-child(4) {
-  transform: translate(2.95rem, 4.95rem);
+  transform: translate(3.35rem, 5.45rem);
 }
 
 .pressure-bridge-scene--pressure-bridge-drivers .pressure-bridge-scene__layer-item:nth-child(5) {
-  transform: translate(3.85rem, 10rem);
+  transform: translate(4.45rem, 11.1rem);
+}
+
+.pressure-bridge-scene--pressure-bridge-drivers .pressure-bridge-scene__layer-plane {
+  border-color: rgba(250, 204, 21, 0.98);
+}
+
+.pressure-bridge-scene--pressure-bridge-drivers .pressure-bridge-scene__layer-item::after {
+  background: rgba(250, 204, 21, 0.88);
+  opacity: 1;
 }
 
 .pressure-bridge-scene--pressure-bridge-stacking .pressure-bridge-scene__layer-item:nth-child(1) {
-  transform: translate(1.6rem, -4.2rem);
+  transform: translate(2.1rem, -5.1rem);
 }
 
 .pressure-bridge-scene--pressure-bridge-stacking .pressure-bridge-scene__layer-item:nth-child(2) {
-  transform: translate(1.35rem, -2.2rem);
+  transform: translate(1.75rem, -2.65rem);
 }
 
 .pressure-bridge-scene--pressure-bridge-stacking .pressure-bridge-scene__layer-item:nth-child(3) {
-  transform: translate(1.1rem, -0.2rem);
+  transform: translate(1.4rem, -0.2rem);
 }
 
 .pressure-bridge-scene--pressure-bridge-stacking .pressure-bridge-scene__layer-item:nth-child(4) {
-  transform: translate(0.85rem, 1.8rem);
+  transform: translate(1.05rem, 2.25rem);
 }
 
 .pressure-bridge-scene--pressure-bridge-stacking .pressure-bridge-scene__layer-item:nth-child(5) {
-  transform: translate(0.6rem, 3.95rem);
+  transform: translate(0.7rem, 4.75rem);
 }
 
 .pressure-bridge-scene--pressure-bridge-stacking .pressure-bridge-scene__layer-plane {
-  box-shadow: 0 24px 40px rgba(22, 48, 71, 0.14);
+  border-color: rgba(239, 68, 68, 0.98);
+}
+
+.pressure-bridge-scene--pressure-bridge-stacking .pressure-bridge-scene__layer-item::after {
+  background: rgba(239, 68, 68, 0.9);
+  opacity: 1;
 }
 
 .pressure-scrolly__text {
@@ -873,84 +889,84 @@
   }
 
   .pressure-bridge-scene__layer-stack {
-    right: calc(50% + 1rem);
-    width: min(22rem, 54vw);
-    height: 20.2rem;
+    right: calc(50% + 0.85rem);
+    width: min(24.5rem, 60vw);
+    height: 23.5rem;
   }
 
   .pressure-bridge-scene__layer-item {
-    height: 6.4rem;
+    height: 7.9rem;
   }
 
   .pressure-bridge-scene__layer-item::before {
-    left: 0.6rem;
-    top: 3.55rem;
-    width: 12.5rem;
-    height: 1rem;
+    left: 0.72rem;
+    top: 4.5rem;
+    width: 14.1rem;
+    height: 1.45rem;
   }
 
   .pressure-bridge-scene__layer-item::after {
-    left: 0.8rem;
-    top: 1.2rem;
-    width: 11.9rem;
-    height: 3.2rem;
+    left: -0.58rem;
+    top: -0.4rem;
+    width: 16.7rem;
+    height: 6.9rem;
     filter: blur(10px);
   }
 
   .pressure-bridge-scene__layer-plane {
-    width: 12.5rem;
-    height: 4.6rem;
+    width: 15.5rem;
+    height: 5.9rem;
   }
 
   .pressure-bridge-scene__layer-tag {
-    left: 13.35rem;
-    min-height: 1.2rem;
-    padding-left: 0.55rem;
-    font-size: 0.58rem;
+    left: 16.2rem;
+    min-height: 1.35rem;
+    padding-left: 0.62rem;
+    font-size: 0.64rem;
   }
 
   .pressure-bridge-scene__layer-tag::before {
-    width: 0.4rem;
+    width: 0.45rem;
   }
 
   .pressure-bridge-scene--pressure-bridge-drivers .pressure-bridge-scene__layer-item:nth-child(1) {
-    transform: translate(0.1rem, -6.9rem);
+    transform: translate(0.15rem, -8.1rem);
   }
 
   .pressure-bridge-scene--pressure-bridge-drivers .pressure-bridge-scene__layer-item:nth-child(2) {
-    transform: translate(0.55rem, -3.85rem);
+    transform: translate(0.75rem, -4.45rem);
   }
 
   .pressure-bridge-scene--pressure-bridge-drivers .pressure-bridge-scene__layer-item:nth-child(3) {
-    transform: translate(1.05rem, -0.15rem);
+    transform: translate(1.35rem, -0.15rem);
   }
 
   .pressure-bridge-scene--pressure-bridge-drivers .pressure-bridge-scene__layer-item:nth-child(4) {
-    transform: translate(1.65rem, 3.3rem);
+    transform: translate(2rem, 4rem);
   }
 
   .pressure-bridge-scene--pressure-bridge-drivers .pressure-bridge-scene__layer-item:nth-child(5) {
-    transform: translate(2.2rem, 6.8rem);
+    transform: translate(2.65rem, 8rem);
   }
 
   .pressure-bridge-scene--pressure-bridge-stacking .pressure-bridge-scene__layer-item:nth-child(1) {
-    transform: translate(0.95rem, -2.9rem);
+    transform: translate(1.2rem, -3.5rem);
   }
 
   .pressure-bridge-scene--pressure-bridge-stacking .pressure-bridge-scene__layer-item:nth-child(2) {
-    transform: translate(0.82rem, -1.45rem);
+    transform: translate(1rem, -1.75rem);
   }
 
   .pressure-bridge-scene--pressure-bridge-stacking .pressure-bridge-scene__layer-item:nth-child(3) {
-    transform: translate(0.7rem, -0.1rem);
+    transform: translate(0.82rem, -0.1rem);
   }
 
   .pressure-bridge-scene--pressure-bridge-stacking .pressure-bridge-scene__layer-item:nth-child(4) {
-    transform: translate(0.58rem, 1.2rem);
+    transform: translate(0.64rem, 1.55rem);
   }
 
   .pressure-bridge-scene--pressure-bridge-stacking .pressure-bridge-scene__layer-item:nth-child(5) {
-    transform: translate(0.46rem, 2.55rem);
+    transform: translate(0.48rem, 3.25rem);
   }
 
   .pressure-story-shell::before {
