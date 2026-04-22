@@ -1,9 +1,6 @@
 :root {
   color: #163047;
-  background:
-    radial-gradient(circle at top left, rgba(226, 235, 244, 0.68) 0%, transparent 34%),
-    radial-gradient(circle at bottom right, rgba(202, 218, 232, 0.44) 0%, transparent 36%),
-    linear-gradient(180deg, #f5f7fa 0%, #e8eef4 52%, #dde6ef 100%);
+  background: var(--section-bg);
   font-family: "Aptos", "Segoe UI Variable", "Segoe UI", sans-serif;
   --ink: #163047;
   --ink-strong: #10253c;
@@ -19,7 +16,7 @@
 
 body {
   color: var(--ink);
-  background: transparent;
+  background: var(--section-bg);
 }
 
 .scrolly {
@@ -27,11 +24,7 @@ body {
 }
 
 .scene {
-  background: linear-gradient(
-    180deg,
-    rgba(241, 245, 249, 0.96) 0%,
-    rgba(227, 235, 244, 0.98) 100%
-  );
+  background: var(--section-bg);
 }
 
 .scene__panel,

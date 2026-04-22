@@ -72,8 +72,7 @@
   position: relative;
   width: 100%;
   height: 100%;
-  background:
-    linear-gradient(180deg, rgba(241, 245, 249, 0.98) 0%, rgba(227, 235, 244, 0.98) 100%);
+  background: var(--section-bg);
 }
 
 .pressure-bridge-scene__axis {
@@ -377,6 +376,257 @@
   opacity: 1;
 }
 
+.tradeoff-bridge-shell {
+  margin-top: 0;
+}
+
+.tradeoff-bridge-scrolly {
+  margin-bottom: 2rem;
+}
+
+.tradeoff-bridge-scrolly .scrolly__graphic {
+  overflow: visible;
+}
+
+.tradeoff-bridge-scrolly__text {
+  width: min(34rem, calc(100% - 2rem));
+  margin: -72vh 2rem 0 auto;
+  padding: 0 0 18vh;
+}
+
+.tradeoff-bridge-scene {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  background: var(--section-bg);
+}
+
+.tradeoff-bridge-scene__axis {
+  position: absolute;
+  inset: 0;
+}
+
+.tradeoff-bridge-scene__axis-line {
+  position: absolute;
+  left: 50%;
+  top: -2.4rem;
+  bottom: -14vh;
+  width: 0.28rem;
+  border-radius: 999px;
+  background: rgb(100, 116, 139);
+  transform: translateX(-50%);
+}
+
+.tradeoff-bridge-scene__axis-dot {
+  position: absolute;
+  left: 50%;
+  width: 1.05rem;
+  height: 1.05rem;
+  border-radius: 999px;
+  background: rgba(100, 116, 139, 0.42);
+  border: 3px solid rgba(242, 246, 250, 0.98);
+  box-shadow: 0 10px 20px rgba(100, 116, 139, 0.2);
+  opacity: 0.7;
+  transform: translate(-50%, -50%) scale(1);
+  transition:
+    opacity 240ms ease,
+    transform 320ms ease,
+    background 320ms ease,
+    box-shadow 320ms ease;
+}
+
+.tradeoff-bridge-scene--tradeoff-bridge-question .tradeoff-bridge-scene__axis-dot[data-index="0"],
+.tradeoff-bridge-scene--tradeoff-bridge-safety .tradeoff-bridge-scene__axis-dot[data-index="1"],
+.tradeoff-bridge-scene--tradeoff-bridge-operations .tradeoff-bridge-scene__axis-dot[data-index="2"],
+.tradeoff-bridge-scene--tradeoff-bridge-scorecards .tradeoff-bridge-scene__axis-dot[data-index="3"] {
+  opacity: 1;
+  background: rgb(71, 85, 105);
+  box-shadow: 0 12px 24px rgba(71, 85, 105, 0.26);
+  transform: translate(-50%, -50%) scale(1.08);
+}
+
+.tradeoff-bridge-scene__panel-shell {
+  position: absolute;
+  right: calc(50% + 2.8rem);
+  top: 50%;
+  width: min(30rem, 44vw);
+  height: 27.5rem;
+  transform: translateY(-50%);
+  z-index: 1;
+}
+
+.tradeoff-bridge-scene__chip-grid {
+  position: absolute;
+  inset: 0;
+}
+
+.tradeoff-bridge-scene__chip {
+  --bridge-chip-tone: #5c6d7e;
+  position: absolute;
+  width: 13.4rem;
+  display: grid;
+  gap: 0.35rem;
+  padding: 0.96rem 1.05rem 1rem;
+  border: 1px solid rgba(22, 48, 71, 0.12);
+  border-top: 0.28rem solid var(--bridge-chip-tone);
+  border-radius: 1.5rem;
+  background: rgba(255, 252, 247, 0.9);
+  box-shadow: 0 14px 28px rgba(22, 48, 71, 0.1);
+  opacity: 0.28;
+  transform-origin: center;
+  transition:
+    opacity 320ms ease,
+    transform 520ms cubic-bezier(0.18, 0.9, 0.28, 1),
+    box-shadow 320ms ease,
+    background 320ms ease,
+    border-color 320ms ease;
+  z-index: 1;
+}
+
+.tradeoff-bridge-scene__chip:nth-child(1) {
+  transform: translate(8.9rem, 4.4rem) rotate(-7deg);
+}
+
+.tradeoff-bridge-scene__chip:nth-child(2) {
+  transform: translate(13.8rem, 6rem) rotate(-2deg);
+}
+
+.tradeoff-bridge-scene__chip:nth-child(3) {
+  transform: translate(9.1rem, 9.8rem) rotate(3deg);
+}
+
+.tradeoff-bridge-scene__chip:nth-child(4) {
+  transform: translate(14rem, 11.7rem) rotate(7deg);
+}
+
+.tradeoff-bridge-scene__chip--safety {
+  --bridge-chip-tone: #15835f;
+}
+
+.tradeoff-bridge-scene__chip--walk {
+  --bridge-chip-tone: var(--teal);
+}
+
+.tradeoff-bridge-scene__chip--flow {
+  --bridge-chip-tone: var(--amber);
+}
+
+.tradeoff-bridge-scene__chip--flex {
+  --bridge-chip-tone: var(--blue);
+}
+
+.tradeoff-bridge-scene__chip-top,
+.tradeoff-bridge-scene__chip-label-wrap {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+}
+
+.tradeoff-bridge-scene__chip-top {
+  justify-content: space-between;
+}
+
+.tradeoff-bridge-scene__chip-label-wrap {
+  min-width: 0;
+  flex: 1;
+}
+
+.tradeoff-bridge-scene__chip-swatch {
+  width: 0.72rem;
+  height: 0.72rem;
+  flex: 0 0 auto;
+  border-radius: 999px;
+  background: var(--bridge-chip-tone);
+  box-shadow: 0 0 0 0.18rem rgba(255, 255, 255, 0.7);
+}
+
+.tradeoff-bridge-scene__chip-label {
+  color: var(--ink-strong);
+  font-size: 1rem;
+  font-weight: 700;
+  line-height: 1.1;
+}
+
+.tradeoff-bridge-scene__chip-icon {
+  width: 2.2rem;
+  height: 2.2rem;
+  flex: 0 0 auto;
+  object-fit: contain;
+  object-position: center;
+  filter: drop-shadow(0 0.25rem 0.45rem rgba(15, 23, 42, 0.14));
+}
+
+.tradeoff-bridge-scene--tradeoff-bridge-question .tradeoff-bridge-scene__chip {
+  opacity: 0.36;
+}
+
+.tradeoff-bridge-scene--tradeoff-bridge-safety .tradeoff-bridge-scene__chip:nth-child(1) {
+  opacity: 1;
+  transform: translate(0.1rem, 3.8rem) rotate(-2deg);
+}
+
+.tradeoff-bridge-scene--tradeoff-bridge-safety .tradeoff-bridge-scene__chip:nth-child(2) {
+  opacity: 1;
+  transform: translate(15.5rem, 3.8rem) rotate(2deg);
+}
+
+.tradeoff-bridge-scene--tradeoff-bridge-safety .tradeoff-bridge-scene__chip:nth-child(3) {
+  opacity: 0.26;
+  transform: translate(13.9rem, 13.9rem) rotate(4deg);
+}
+
+.tradeoff-bridge-scene--tradeoff-bridge-safety .tradeoff-bridge-scene__chip:nth-child(4) {
+  opacity: 0.26;
+  transform: translate(7.9rem, 15.4rem) rotate(-2deg);
+}
+
+.tradeoff-bridge-scene--tradeoff-bridge-operations .tradeoff-bridge-scene__chip:nth-child(1) {
+  opacity: 0.7;
+  transform: translate(0.1rem, 3.8rem) rotate(0deg);
+}
+
+.tradeoff-bridge-scene--tradeoff-bridge-operations .tradeoff-bridge-scene__chip:nth-child(2) {
+  opacity: 0.7;
+  transform: translate(15.5rem, 3.8rem) rotate(0deg);
+}
+
+.tradeoff-bridge-scene--tradeoff-bridge-operations .tradeoff-bridge-scene__chip:nth-child(3) {
+  opacity: 1;
+  transform: translate(0.1rem, 15.3rem) rotate(-2deg);
+}
+
+.tradeoff-bridge-scene--tradeoff-bridge-operations .tradeoff-bridge-scene__chip:nth-child(4) {
+  opacity: 1;
+  transform: translate(15.5rem, 15.3rem) rotate(2deg);
+}
+
+.tradeoff-bridge-scene--tradeoff-bridge-scorecards .tradeoff-bridge-scene__chip:nth-child(1) {
+  opacity: 1;
+  transform: translate(0.1rem, 3.8rem) rotate(0deg);
+}
+
+.tradeoff-bridge-scene--tradeoff-bridge-scorecards .tradeoff-bridge-scene__chip:nth-child(2) {
+  opacity: 1;
+  transform: translate(15.5rem, 3.8rem) rotate(0deg);
+}
+
+.tradeoff-bridge-scene--tradeoff-bridge-scorecards .tradeoff-bridge-scene__chip:nth-child(3) {
+  opacity: 1;
+  transform: translate(0.1rem, 15.3rem) rotate(0deg);
+}
+
+.tradeoff-bridge-scene--tradeoff-bridge-scorecards .tradeoff-bridge-scene__chip:nth-child(4) {
+  opacity: 1;
+  transform: translate(15.5rem, 15.3rem) rotate(0deg);
+}
+
+.tradeoff-bridge-scene--tradeoff-bridge-safety .tradeoff-bridge-scene__chip:nth-child(-n + 2),
+.tradeoff-bridge-scene--tradeoff-bridge-operations .tradeoff-bridge-scene__chip:nth-child(n + 3),
+.tradeoff-bridge-scene--tradeoff-bridge-scorecards .tradeoff-bridge-scene__chip {
+  box-shadow: 0 18px 34px rgba(22, 48, 71, 0.14);
+  background: rgba(255, 252, 247, 0.97);
+}
+
 .pressure-scrolly__text {
   margin: -72vh auto 0 2rem;
 }
@@ -391,10 +641,7 @@
   width: 100%;
   height: 100%;
   overflow: hidden;
-  background:
-    radial-gradient(circle at 18% 16%, rgba(184, 212, 233, 0.36) 0%, transparent 28%),
-    radial-gradient(circle at 82% 24%, rgba(248, 196, 108, 0.28) 0%, transparent 25%),
-    linear-gradient(180deg, #eef4f8 0%, #dde6ef 100%);
+  background: var(--section-bg);
 }
 
 .pressure-scene__canvas {
@@ -728,6 +975,10 @@
   margin-top: 0.85rem;
 }
 
+.pressure-scene__metrics-stack {
+  animation: pressure-metrics-fade-in 380ms cubic-bezier(0.18, 0.9, 0.28, 1);
+}
+
 .pressure-scene__source-note {
   margin-top: 0.9rem !important;
   font-size: 0.72rem;
@@ -857,6 +1108,18 @@
   transform: translateY(0) scale(1);
 }
 
+@keyframes pressure-metrics-fade-in {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
 @media (max-width: 900px) {
   .pressure-story-shell {
     gap: 1rem;
@@ -967,6 +1230,92 @@
 
   .pressure-bridge-scene--pressure-bridge-stacking .pressure-bridge-scene__layer-item:nth-child(5) {
     transform: translate(0.48rem, 3.25rem);
+  }
+
+  .tradeoff-bridge-scrolly__text {
+    width: min(calc(100% - 1.5rem), 34rem);
+    margin-top: -60vh;
+    padding-bottom: 14vh;
+  }
+
+  .tradeoff-bridge-scene__axis-line {
+    top: -1.35rem;
+    bottom: 10%;
+    width: 0.24rem;
+  }
+
+  .tradeoff-bridge-scene__axis-dot {
+    width: 0.95rem;
+    height: 0.95rem;
+  }
+
+  .tradeoff-bridge-scene__panel-shell {
+    left: 1rem;
+    right: 1rem;
+    width: auto;
+    height: 22rem;
+    top: 44%;
+  }
+
+  .tradeoff-bridge-scene__chip {
+    width: 9.15rem;
+    padding: 0.78rem 0.82rem 0.82rem;
+    border-radius: 1.2rem;
+  }
+
+  .tradeoff-bridge-scene__chip-label {
+    font-size: 0.92rem;
+  }
+
+  .tradeoff-bridge-scene__chip-icon {
+    width: 1.75rem;
+    height: 1.75rem;
+  }
+
+  .tradeoff-bridge-scene__chip:nth-child(1) {
+    transform: translate(3.7rem, 4rem) rotate(-7deg);
+  }
+
+  .tradeoff-bridge-scene__chip:nth-child(2) {
+    transform: translate(8.8rem, 5.4rem) rotate(-2deg);
+  }
+
+  .tradeoff-bridge-scene__chip:nth-child(3) {
+    transform: translate(4.2rem, 8.5rem) rotate(3deg);
+  }
+
+  .tradeoff-bridge-scene__chip:nth-child(4) {
+    transform: translate(9.1rem, 9.7rem) rotate(7deg);
+  }
+
+  .tradeoff-bridge-scene--tradeoff-bridge-safety .tradeoff-bridge-scene__chip:nth-child(1),
+  .tradeoff-bridge-scene--tradeoff-bridge-operations .tradeoff-bridge-scene__chip:nth-child(1),
+  .tradeoff-bridge-scene--tradeoff-bridge-scorecards .tradeoff-bridge-scene__chip:nth-child(1) {
+    transform: translate(0.2rem, 3.7rem) rotate(0deg);
+  }
+
+  .tradeoff-bridge-scene--tradeoff-bridge-safety .tradeoff-bridge-scene__chip:nth-child(2),
+  .tradeoff-bridge-scene--tradeoff-bridge-operations .tradeoff-bridge-scene__chip:nth-child(2),
+  .tradeoff-bridge-scene--tradeoff-bridge-scorecards .tradeoff-bridge-scene__chip:nth-child(2) {
+    transform: translate(11.1rem, 3.7rem) rotate(0deg);
+  }
+
+  .tradeoff-bridge-scene--tradeoff-bridge-operations .tradeoff-bridge-scene__chip:nth-child(3),
+  .tradeoff-bridge-scene--tradeoff-bridge-scorecards .tradeoff-bridge-scene__chip:nth-child(3) {
+    transform: translate(0.2rem, 12.9rem) rotate(0deg);
+  }
+
+  .tradeoff-bridge-scene--tradeoff-bridge-operations .tradeoff-bridge-scene__chip:nth-child(4),
+  .tradeoff-bridge-scene--tradeoff-bridge-scorecards .tradeoff-bridge-scene__chip:nth-child(4) {
+    transform: translate(11.1rem, 12.9rem) rotate(0deg);
+  }
+
+  .tradeoff-bridge-scene--tradeoff-bridge-safety .tradeoff-bridge-scene__chip:nth-child(3) {
+    transform: translate(8.7rem, 10.9rem) rotate(4deg);
+  }
+
+  .tradeoff-bridge-scene--tradeoff-bridge-safety .tradeoff-bridge-scene__chip:nth-child(4) {
+    transform: translate(2.9rem, 12.9rem) rotate(-2deg);
   }
 
   .pressure-story-shell::before {

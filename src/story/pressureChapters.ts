@@ -43,7 +43,7 @@ export const pressureChapters: PressureChapter[] = [
     id: "pressure-lookup",
     headline: "Try yourself!",
     body:
-      "Now test another borough or ZIP code and compare its curb-pressure profile against the same citywide benchmarks.",
+      "Now test another ZIP code and compare its curb-pressure profile against the same citywide benchmarks.",
     state: {
       variant: "hotspot",
       hotspotLabel: "Downtown Brooklyn",

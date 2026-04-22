@@ -3,10 +3,7 @@
   line-height: 1.5;
   font-weight: 400;
   color: #163047;
-  background:
-    radial-gradient(circle at top left, rgba(250, 232, 173, 0.5) 0%, transparent 32%),
-    radial-gradient(circle at bottom right, rgba(112, 185, 194, 0.34) 0%, transparent 34%),
-    linear-gradient(180deg, #f4efe4 0%, #e8ece5 46%, #dde7ee 100%);
+  background: #eef3f7;
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
@@ -20,6 +17,7 @@
   --surface-strong: rgba(255, 252, 247, 0.94);
   --shadow-soft: 0 18px 40px rgba(22, 48, 71, 0.12);
   --shadow-strong: 0 28px 72px rgba(22, 48, 71, 0.18);
+  --section-bg: #eef3f7;
 }
 
 * {
@@ -36,7 +34,7 @@ body,
 body {
   min-width: 320px;
   color: var(--ink);
-  background: transparent;
+  background: var(--section-bg);
 }
 
 img,
@@ -106,7 +104,7 @@ svg {
   position: relative;
   width: 100%;
   height: 100%;
-  background: linear-gradient(180deg, #edf3f7 0%, #dde6ee 100%);
+  background: var(--section-bg);
 }
 
 .scene__canvas {

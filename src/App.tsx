@@ -4,6 +4,7 @@ import { Scrolly } from "./components/scrolly";
 import { ConfigGallery } from "./components/config-gallery";
 import { PressureBridge } from "./components/pressure-bridge";
 import { PressureStory } from "./components/pressure-story";
+import { TradeoffBridge } from "./components/tradeoff-bridge";
 
 const chapterStepIds = chapters.map((chapter) => chapter.id);
 
@@ -27,6 +28,7 @@ export default function App() {
       </section>
       <PressureBridge />
       <PressureStory />
+      <TradeoffBridge />
       <ConfigGallery />
     </main>
   );

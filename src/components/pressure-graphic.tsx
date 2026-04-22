@@ -4,6 +4,7 @@ import type { PressureGraphicState } from "../story/pressureChapters";
 
 type PressureGraphicProps = {
   state: PressureGraphicState;
+  revealHotspotMetrics?: boolean;
 };
 
 type RegionMetric = {
@@ -75,7 +76,10 @@ function pressureMapSrc(
   return `${import.meta.env.BASE_URL}pressure-map.html?${params.toString()}`;
 }
 
-export function PressureGraphic({ state }: PressureGraphicProps) {
+export function PressureGraphic({
+  state,
+  revealHotspotMetrics = true
+}: PressureGraphicProps) {
   const [hotspotSummary, setHotspotSummary] = useState<RegionSummary | null>(null);
   const [regionIndex, setRegionIndex] = useState<RegionSummaryIndex | null>(null);
   const [selectedRegionKey, setSelectedRegionKey] = useState<string | null>(null);
@@ -84,28 +88,36 @@ export function PressureGraphic({ state }: PressureGraphicProps) {
   const isHotspot = state.variant === "hotspot";
   const lookupEnabled = Boolean(state.enableRegionLookup);
   const summaries = regionIndex?.summaries ?? [];
+  const lookupSummaries = summaries.filter((summary) => summary.type === "zip");
   const defaultRegion =
     summaries.find((summary) => summary.key === regionIndex?.default_region_key) ?? null;
   const selectedRegion =
-    summaries.find(
-      (summary) =>
-        summary.key === (selectedRegionKey ?? regionIndex?.default_region_key ?? "")
-    ) ?? defaultRegion;
+    lookupSummaries.find((summary) => summary.key === (selectedRegionKey ?? "")) ?? null;
   const lockedHotspotRegion = hotspotSummary ?? defaultRegion;
+  const hasLookupSelection = lookupEnabled && Boolean(selectedRegionKey);
   const activeRegion = lookupEnabled
-    ? selectedRegion ?? lockedHotspotRegion
+    ? hasLookupSelection
+      ? selectedRegion ?? lockedHotspotRegion
+      : lockedHotspotRegion
     : lockedHotspotRegion;
   const isDefaultRegion = activeRegion?.key === lockedHotspotRegion?.key;
   const detailEyebrow = lookupEnabled ? "Try yourself!" : "Hotspot zoom";
   const detailLabel =
-    activeRegion?.type === "zip"
-      ? `ZIP ${activeRegion.label}`
-      : activeRegion?.label ?? state.hotspotLabel ?? "Downtown Brooklyn";
+    lookupEnabled && !hasLookupSelection
+      ? "Compare another ZIP code"
+      : activeRegion?.type === "zip"
+        ? `ZIP ${activeRegion.label}`
+        : activeRegion?.label ?? state.hotspotLabel ?? "Downtown Brooklyn";
   const detailNote =
-    lookupEnabled && isDefaultRegion
-      ? state.hotspotNote ?? null
-      : activeRegion?.note ?? state.hotspotNote ?? "Regional metrics are loading.";
-  const detailMetrics = activeRegion?.metrics ?? [];
+    lookupEnabled && !hasLookupSelection
+      ? "Enter a ZIP code above to reveal the comparison charts against the citywide benchmark."
+      : lookupEnabled && activeRegion?.type === "zip"
+        ? null
+      : lookupEnabled && isDefaultRegion
+        ? state.hotspotNote ?? null
+        : activeRegion?.note ?? state.hotspotNote ?? "Regional metrics are loading.";
+  const metricsVisible = lookupEnabled ? hasLookupSelection : revealHotspotMetrics;
+  const detailMetrics = metricsVisible ? activeRegion?.metrics ?? [] : [];
   const detailSourceNote =
     activeRegion?.source_note ??
     "Regional metrics could not be loaded from the exported summary.";
@@ -173,27 +185,26 @@ export function PressureGraphic({ state }: PressureGraphicProps) {
   }, [lookupEnabled, regionIndex]);
 
   useEffect(() => {
-    if (!regionIndex || selectedRegionKey) {
+    if (!lookupEnabled) {
       return;
     }
 
-    const defaultRegion =
-      regionIndex.summaries.find(
-        (summary) => summary.key === regionIndex.default_region_key
-      ) ?? null;
-    if (!defaultRegion) {
-      return;
-    }
-
-    setSelectedRegionKey(defaultRegion.key);
-    setRegionQuery(defaultRegion.search_label);
-  }, [regionIndex, selectedRegionKey]);
+    setSelectedRegionKey(null);
+    setRegionQuery("");
+    setRegionError(null);
+  }, [lookupEnabled]);
 
   function handleRegionSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
-    const match = resolveRegionQuery(regionQuery, summaries);
+    const trimmedQuery = regionQuery.trim();
+    if (!trimmedQuery) {
+      setRegionError("Enter an NYC ZIP code to compare.");
+      return;
+    }
+
+    const match = resolveRegionQuery(trimmedQuery, lookupSummaries);
     if (!match) {
-      setRegionError("Try an NYC borough or ZIP code from the list.");
+      setRegionError("Try an NYC ZIP code from the list.");
       return;
     }
 
@@ -207,7 +218,7 @@ export function PressureGraphic({ state }: PressureGraphicProps) {
       <div className="pressure-scene__canvas">
         <div className="pressure-scene__map-shell">
           <iframe
-            key={`${state.variant}-${lookupEnabled ? "lookup" : "hotspot"}-${activeRegion?.key ?? "default"}`}
+            key={`${state.variant}-${activeRegion?.key ?? "default"}`}
             className="pressure-map-frame"
             title={
               isHotspot
@@ -246,7 +257,7 @@ export function PressureGraphic({ state }: PressureGraphicProps) {
                     className="pressure-scene__region-search-label"
                     htmlFor="pressure-region-input"
                   >
-                    Try another borough or ZIP code
+                    Try another ZIP code
                   </label>
                   <div className="pressure-scene__region-search-row">
                     <input
@@ -258,103 +269,109 @@ export function PressureGraphic({ state }: PressureGraphicProps) {
                         setRegionQuery(event.target.value);
                         setRegionError(null);
                       }}
-                      placeholder="Brooklyn or 11201"
+                      placeholder="11201"
                     />
                     <button
                       className="pressure-scene__region-button"
                       type="submit"
-                      disabled={!summaries.length}
+                      disabled={!lookupSummaries.length}
                     >
                       Show
                     </button>
                   </div>
                   <p className="pressure-scene__region-help">
-                    Searches borough and ZIP summaries from your local data.
+                    Searches ZIP summaries from your local data.
                   </p>
                   {regionError ? (
                     <p className="pressure-scene__region-error">{regionError}</p>
                   ) : null}
                 </form>
                 <datalist id="pressure-region-options">
-                  {summaries.map((summary) => (
+                  {lookupSummaries.map((summary) => (
                     <option key={summary.key} value={summary.search_label} />
                   ))}
                 </datalist>
               </>
             ) : null}
 
-            <div className="pressure-scene__tag-row">
-              {detailMetrics.map((metric) => {
-                const maxValue = Math.max(
-                  metric.region_value,
-                  metric.citywide_value,
-                  0.0001
-                );
-                const regionHeight = `${Math.max(
-                  (metric.region_value / maxValue) * 100,
-                  8
-                )}%`;
-                const citywideHeight = `${Math.max(
-                  (metric.citywide_value / maxValue) * 100,
-                  8
-                )}%`;
-                const isElevated = metric.region_value >= metric.citywide_value;
+            {detailMetrics.length ? (
+              <>
+                <div className="pressure-scene__metrics-stack">
+                  <div className="pressure-scene__tag-row">
+                    {detailMetrics.map((metric) => {
+                      const maxValue = Math.max(
+                        metric.region_value,
+                        metric.citywide_value,
+                        0.0001
+                      );
+                      const regionHeight = `${Math.max(
+                        (metric.region_value / maxValue) * 100,
+                        8
+                      )}%`;
+                      const citywideHeight = `${Math.max(
+                        (metric.citywide_value / maxValue) * 100,
+                        8
+                      )}%`;
+                      const isElevated = metric.region_value >= metric.citywide_value;
 
-                return (
-                  <div key={metric.label} className="pressure-scene__tag">
-                    <div className="pressure-scene__metric-head">
-                      <span className="pressure-scene__tag-label">{metric.label}</span>
-                      <span
-                        className={`pressure-scene__metric-badge ${
-                          isElevated
-                            ? "pressure-scene__metric-badge--up"
-                            : "pressure-scene__metric-badge--down"
-                        }`}
-                      >
-                        {metric.comparison_display}
-                      </span>
-                    </div>
+                      return (
+                        <div key={metric.label} className="pressure-scene__tag">
+                          <div className="pressure-scene__metric-head">
+                            <span className="pressure-scene__tag-label">{metric.label}</span>
+                            <span
+                              className={`pressure-scene__metric-badge ${
+                                isElevated
+                                  ? "pressure-scene__metric-badge--up"
+                                  : "pressure-scene__metric-badge--down"
+                              }`}
+                            >
+                              {metric.comparison_display}
+                            </span>
+                          </div>
 
-                    <div className="pressure-scene__metric-meta">
-                      <span className="pressure-scene__metric-unit">{metric.unit}</span>
-                      {metric.proxy ? (
-                        <span className="pressure-scene__metric-proxy">311 proxy</span>
-                      ) : null}
-                    </div>
+                          <div className="pressure-scene__metric-meta">
+                            <span className="pressure-scene__metric-unit">{metric.unit}</span>
+                            {metric.proxy ? (
+                              <span className="pressure-scene__metric-proxy">311 proxy</span>
+                            ) : null}
+                          </div>
 
-                    <div className="pressure-scene__mini-chart">
-                      <div className="pressure-scene__mini-column">
-                        <span className="pressure-scene__mini-value">
-                          {metric.region_display}
-                        </span>
-                        <div className="pressure-scene__mini-bar-shell">
-                          <span
-                            className="pressure-scene__mini-bar pressure-scene__mini-bar--hotspot"
-                            style={{ height: regionHeight }}
-                          />
+                          <div className="pressure-scene__mini-chart">
+                            <div className="pressure-scene__mini-column">
+                              <span className="pressure-scene__mini-value">
+                                {metric.region_display}
+                              </span>
+                              <div className="pressure-scene__mini-bar-shell">
+                                <span
+                                  className="pressure-scene__mini-bar pressure-scene__mini-bar--hotspot"
+                                  style={{ height: regionHeight }}
+                                />
+                              </div>
+                              <span className="pressure-scene__mini-label">Selected</span>
+                            </div>
+
+                            <div className="pressure-scene__mini-column">
+                              <span className="pressure-scene__mini-value">
+                                {metric.citywide_display}
+                              </span>
+                              <div className="pressure-scene__mini-bar-shell">
+                                <span
+                                  className="pressure-scene__mini-bar pressure-scene__mini-bar--citywide"
+                                  style={{ height: citywideHeight }}
+                                />
+                              </div>
+                              <span className="pressure-scene__mini-label">NYC avg</span>
+                            </div>
+                          </div>
                         </div>
-                        <span className="pressure-scene__mini-label">Selected</span>
-                      </div>
-
-                      <div className="pressure-scene__mini-column">
-                        <span className="pressure-scene__mini-value">
-                          {metric.citywide_display}
-                        </span>
-                        <div className="pressure-scene__mini-bar-shell">
-                          <span
-                            className="pressure-scene__mini-bar pressure-scene__mini-bar--citywide"
-                            style={{ height: citywideHeight }}
-                          />
-                        </div>
-                        <span className="pressure-scene__mini-label">NYC avg</span>
-                      </div>
-                    </div>
+                      );
+                    })}
                   </div>
-                );
-              })}
-            </div>
 
-            <p className="pressure-scene__source-note">{detailSourceNote}</p>
+                  <p className="pressure-scene__source-note">{detailSourceNote}</p>
+                </div>
+              </>
+            ) : null}
           </div>
         ) : null}
       </div>
