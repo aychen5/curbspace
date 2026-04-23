@@ -41,10 +41,10 @@ function averageScore(config: CurbConfiguration) {
 }
 
 const scoreToneColors: Record<ScoreMetric["tone"], string> = {
-  safety: "#15835f",
-  walk: "var(--teal)",
-  flow: "var(--amber)",
-  flex: "var(--blue)"
+  safety: "#a6c4e4",
+  walk: "#0056b3",
+  flow: "#ffcc00",
+  flex: "#ff5733"
 };
 
 function formatConflictLabel(conflict: string) {
